@@ -1,8 +1,6 @@
 package lk.ijse.hasaonlinestore.util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DataBaseUtil {
     private static final String URL = "jdbc:mysql://localhost:3306/hasaonlinestore";
@@ -15,6 +13,16 @@ public class DataBaseUtil {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (ClassNotFoundException e) {
             throw new SQLException("Database driver not found", e);
+        }
+    }
+
+    public static void closeResources(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+        try {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

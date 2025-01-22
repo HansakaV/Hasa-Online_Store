@@ -1,4 +1,5 @@
-<%--
+<%@ page import="lk.ijse.hasaonlinestore.model.Account" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Lenovo
   Date: 1/18/2025
@@ -13,105 +14,18 @@
     <title>Market Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
     <style>
         .content-section {
             display: none;
             margin-top: 80px;
         }
-        .active-section {
-            display: block;
-        }
+
+
     </style>
 </head>
 <body>
-<!-- Fixed Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">
-            <i class="bi bi-shop me-2"></i>
-            Hasa Online Store Admin Panel
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-section="customerSection">
-                        <i class="bi bi-people-fill me-1"></i>
-                        Customers
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-section="itemSection">
-                        <i class="bi bi-box-seam-fill me-1"></i>
-                        Items
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" data-section="orderSection">
-                        <i class="bi bi-cart-fill me-1"></i>
-                        Order History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="index.jsp" data-section="logoutSection">
-                        <i class="bi bi-box-arrow-right me-1"></i>
-                        Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<div class="container">
-    <!-- Customer Section -->
-    <div id="customerSection" class="content-section active-section">
-        <h2 class="mb-4">Customer Management</h2>
-        <form id="customerForm" class="mb-4" action="CustomerController" method="post">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <label for="customerId" class="form-label">Customer ID</label>
-                    <input type="text" class="form-control" id="customerId" name="customerId" placeholder="Enter ID">
-                </div>
-                <div class="col-md-4">
-                    <label for="customerName" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="customerName" name="customerName" placeholder="Enter Name">
-                </div>
-                <div class="col-md-4">
-                    <label for="customerAddress" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="customerAddress" name="customerAddress" placeholder="Enter Address">
-                </div>
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="btn btn-warning me-2" name="action" value="update">Block</button>
-                <button type="submit" class="btn btn-danger" name="action" value="delete">Delete</button>
-            </div>
-        </form>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead class="table-dark">
-                <tr>
-                    <th>Customer ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                </tr>
-                </thead>
-                <tbody id="customerTableBody">
-                <!-- Populate this dynamically -->
-                <c:forEach var="customer" items="${customerList}">
-                    <tr>
-                        <td>${customer.customerId}</td>
-                        <td>${customer.customerName}</td>
-                        <td>${customer.customerAddress}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Item Section -->
     <div id="itemSection" class="content-section">
         <h2 class="mb-4">Item Management</h2>
         <form id="itemForm" action="ItemController" method="post" enctype="multipart/form-data">
@@ -132,9 +46,7 @@
                                     <label for="itemCategory" class="form-label">Category*</label>
                                     <select class="form-select" id="itemCategory" name="itemCategory" required>
                                         <option value="">Select Category</option>
-                                        <c:forEach items="${categories}" var="category">
-                                            <option value="${category.id}">${category.name}</option>
-                                        </c:forEach>
+
                                     </select>
                                 </div>
                                 <div class="col-md-6">
@@ -218,6 +130,8 @@
         </div>
 
     </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css">
+
 
     <script>
         function previewImage(input) {
@@ -250,33 +164,6 @@
                     event.preventDefault();
                 }
             }
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Get all navigation links
-            const navLinks = document.querySelectorAll('.nav-link');
-
-            // Add event listener to each navigation link
-            navLinks.forEach(link => {
-                link.addEventListener('click', function (event) {
-                    event.preventDefault(); // Prevent default anchor behavior
-
-                    // Get the target section from the data-section attribute
-                    const targetSectionId = this.getAttribute('data-section');
-
-                    // Hide all sections
-                    const allSections = document.querySelectorAll('.content-section');
-                    allSections.forEach(section => section.classList.remove('active-section'));
-
-                    // Show the target section
-                    const targetSection = document.getElementById(targetSectionId);
-                    if (targetSection) {
-                        targetSection.classList.add('active-section');
-                    }
-                });
-            });
         });
     </script>
 

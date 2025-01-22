@@ -1,14 +1,20 @@
 package lk.ijse.hasaonlinestore.dao;
 
 import lk.ijse.hasaonlinestore.model.Account;
+import jakarta.annotation.Resource;
 import lk.ijse.hasaonlinestore.util.DataBaseUtil;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AccountDao {
+    @Resource(name = "java:comp/env/jdbc/Pool")
+    private   DataSource DataBaseUtil1;
+
+
     public boolean registerAccount(Account account) throws SQLException {
         String sql = "INSERT INTO accounts (name, address, phone_number, email, username, password) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -48,6 +54,7 @@ public class AccountDao {
     }
 
     public Account login(String username, String password) throws SQLException {
+
         String sql = "SELECT * FROM accounts WHERE username = ? AND password = ?";
 
         try (Connection conn = DataBaseUtil.getConnection();
@@ -69,7 +76,28 @@ public class AccountDao {
                 return account;
             }
         }
+
         return null;
+    }
+    public String checkAdmin(String name,String pw) throws SQLException {
+        String sql = "SELECT * FROM accounts WHERE username = ? AND password = ?";
+
+        try (Connection conn = DataBaseUtil.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, name);
+            pstmt.setString(2, pw); // In production, use password hashing
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                if (rs.getString("username").equals("admin") && rs.getString("password").equals("admin123")){
+                    return "admin";
+                }
+            }
+        }
+        return null;
+
     }
 
     public void updateLastLogin(int userId) throws SQLException {

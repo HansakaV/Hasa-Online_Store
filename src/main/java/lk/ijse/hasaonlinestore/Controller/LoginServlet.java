@@ -33,6 +33,10 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+
+
+
+
         try {
             Account account = accountDAO.login(username, password);
 
@@ -50,7 +54,13 @@ public class LoginServlet extends HttpServlet {
                     session.setMaxInactiveInterval(30 * 60); // 30 minutes
                 }
 
-                response.sendRedirect("index.jsp");
+                if ("admin".equals(account.getUsername())) {
+                    response.sendRedirect("AdminPanel.jsp");
+                } else {
+                    response.sendRedirect("index.jsp");
+                }
+
+                /*response.sendRedirect("index.jsp")*/;
             } else {
                 request.setAttribute("error", "Invalid username or password");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
