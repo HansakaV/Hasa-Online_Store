@@ -1,6 +1,11 @@
 <%@ page import="lk.ijse.hasaonlinestore.model.Account" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.net.URLDecoder" %>
+<%
+    String message = request.getParameter("message");
+    String error = request.getParameter("error");
+%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -32,8 +37,8 @@
 <body>
 <div class="container">
     <div id="itemSection" class="content-section">
-        <h2 class="mb-4">Item Management</h2>
-        <form id="itemForm" action="ItemController" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <h2 class="mb-4">Add New Item</h2>
+        <form id="itemForm" action="item-save" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
             <div class="row g-4">
                 <!-- Basic Information -->
                 <div class="col-md-6">
@@ -106,6 +111,7 @@
                                         <input type="file" class="form-control" id="itemImage" name="itemImage"
                                                accept="image/*" onchange="previewImage(this)">
                                         <div class="form-text">Recommended size: 500x500px, Max size: 2MB</div>
+                                        <% System.out.println();%>
                                     </div>
                                 </div>
                             </div>
@@ -131,6 +137,28 @@
         </form>
     </div>
 </div>
+
+<%--Alerts for success and error messages--%>
+<script>
+    document.addEventListener('DOMContentLoaded', function() { //dom ek load wenn oni
+        <% if (message != null) { %>
+        Swal.fire({
+            title: "Item Saved Successfully!",
+            icon: "success",
+            draggable: true
+        });
+        <% } %>
+
+        <% if (error != null) { %>
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "<%= request.getParameter("error").replace("\"", "\\\"") %>",
+            confirmButtonColor: "#3085d6"
+        });
+        <% } %>
+    });
+</script>
 
 <script>
     // Form validation

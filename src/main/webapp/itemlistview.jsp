@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="lk.ijse.hasaonlinestore.model.Account" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lk.ijse.hasaonlinestore.dto.ItemDTO" %>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Management - Hasa Online Store</title>
+    <title>Item Management - Hasa Online Store</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet">
 </head>
@@ -24,7 +24,7 @@
 
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2">Customer Management</h1>
+        <h1 class="h2">Item List</h1>
         <a href="AdminPanel.jsp" class="btn btn-outline-primary">
             <i class="bi bi-arrow-left me-2"></i>
             Back to Dashboard
@@ -37,34 +37,40 @@
                 <table class="table table-hover">
                     <thead class="table-light">
                     <tr>
+                        <th scope="col">Code</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Address</th>
-                        <th scope="col">Telephone</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">unitPrice</th>
+                        <th scope="col">Brand</th>
                         <th scope="col" class="text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <%
-                        List<Account> datalist = (List<Account>) request.getAttribute("customers");
-                        System.out.println("list "+datalist);
+                        List<ItemDTO> datalist = (List<ItemDTO>) request.getAttribute("itemList");
+                        System.out.println("Item list ek  "+datalist);
                         if (datalist == null) {
-                            response.sendRedirect("customers");
+                            response.sendRedirect("items");
                             return;
                         }
 
                         String name = (String) request.getAttribute("name");
                         if (datalist != null && !datalist.isEmpty()) {
-                            for (Account customer : datalist) {
+                            for (ItemDTO item : datalist) {
                     %>
                     <tr>
-                        <td><%= customer.getName() %></td>
-                        <td><%= customer.getEmail() %></td>
-                        <td><%= customer.getAddress() %></td>
-                        <td><%= customer.getPhoneNumber() %></td>
+                        <td><%= item.getItemCode() %></td>
+                        <td><%= item.getItemName() %></td>
+                        <td><%= item.getCategory() %></td>
+                        <td><%= item.getDescription() %></td>
+                        <td><%= item.getQtyOnHand() %></td>
+                        <td><%= item.getUnitPrice() %></td>
+                        <td><%= item.getBrand() %></td>
                         <td class="text-center">
                             <button class="btn btn-danger btn-sm"
-                                    onclick="confirmDelete('<%= customer.getName() %>')"
+                                    onclick="confirmDelete('<%= item.getItemCode() %>')"
                                     type="button">
                                 <i class="bi bi-trash me-1"></i>
                                 Delete
@@ -96,11 +102,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this customer?
+                    Are you sure you want to delete this item?
                 </div>
                 <div class="modal-footer">
-                    <form id="deleteForm" action="customer" method="POST">
-                        <input type="hidden" id="customerId" name="customerId" value="">
+                    <form id="deleteForm" action="items" method="POST">
+                        <input type="hidden" id="itemId" name="itemId" value="">
                         <input type="hidden" name="action" value="delete">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -112,8 +118,8 @@
 </div>
     <!-- JavaScript for delete functionality -->
     <script>
-        function confirmDelete(customerId) {
-            document.getElementById('customerId').value = customerId;
+        function confirmDelete(itemId) {
+            document.getElementById('itemId').value = itemId;
             var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show();
         }
