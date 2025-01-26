@@ -37,13 +37,16 @@ public class ViewCart extends HttpServlet {
         int qty = 0;
         double unitPrice = 0.0;
 
+/*
         int user_id_cart = getUserName(username);
+*/
+
 
         try {
             Connection connection = dataSource.getConnection();
-            String sql = "SELECT * FROM cart WHERE user_id = ?";
+            String sql = "SELECT * FROM cart2 WHERE user_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, String.valueOf(user_id_cart));
+           statement.setString(1, username);
 
             statement.execute();
             ResultSet resultSet = statement.getResultSet();
@@ -113,25 +116,6 @@ public class ViewCart extends HttpServlet {
 
         return itemList;
     }
-    private int getUserName(String user) {
-        System.out.println("get Userna"user);
-        int user_id = 0;
-        try {
-            Connection connection = dataSource.getConnection();
-            String sql = "SELECT * FROM cart WHERE user_id = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
 
-            statement.setString(1, user);
-            statement.execute();
-            ResultSet resultSet = statement.getResultSet();
-            while (resultSet.next()) {
-                user_id = resultSet.getInt("user_id");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return user_id;
-
-    }
 
 }

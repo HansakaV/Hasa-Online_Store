@@ -187,34 +187,48 @@
                 </table>
             </div>
         </div>
-
         <div class="col-lg-4">
             <div class="cart-summary">
                 <h4>Order Summary</h4>
                 <hr>
+                <%
+                    double subtotal = 0;
+                    double shippingCost = 350.00;
+                    if (datalist != null && !datalist.isEmpty()) {
+                        for (ViewCartDTO item : datalist) {
+                            subtotal += item.getUnitPrice() * item.getQtyOnHand();
+                        }
+                    }
+                    double total = subtotal + shippingCost;
+                %>
+
                 <div class="d-flex justify-content-between mb-2">
                     <span>Subtotal</span>
-                    <span id="subtotal">$0.00</span>
+                    <span id="subtotal">LKR<%= String.format("%.2f", subtotal) %></span>
                 </div>
                 <div class="d-flex justify-content-between mb-2">
                     <span>Shipping</span>
-                    <span id="shipping">$0.00</span>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Tax</span>
-                    <span id="tax">$0.00</span>
+                    <span id="shipping">LKR 350.00</span>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between mb-4">
                     <strong>Total</strong>
-                    <strong id="total">$0.00</strong>
+                    <strong id="total">$<%= String.format("%.2f", total) %></strong>
                 </div>
-                <button class="btn btn-primary w-100" onclick="proceedToCheckout()">
-                    Proceed to Checkout
-                </button>
+
+                <form action="order-save" method="POST">
+                    <input type="hidden" name="subtotal" value="<%= subtotal %>">
+                    <input type="hidden" name="shipping" value="<%= shippingCost %>">
+                    <input type="hidden" name="total" value="<%= total %>">
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Proceed to Checkout
+                    </button>
+                </form>
+
             </div>
         </div>
-    </div>
+
     <%
         }
     %>
