@@ -26,11 +26,6 @@ import java.util.List;
 public class ItemServlet extends HttpServlet {
     @Resource(name = "jdbc/Pool")
     private DataSource dataSource;
-    private static final String UPLOAD_DIRECTORY = "uploads";
-    private static final int MEMORY_THRESHOLD = 1024 * 1024 * 3;  // 3MB
-    private static final int MAX_FILE_SIZE = 1024 * 1024 * 5;      // 5MB
-    private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 10;  // 10MB
-
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

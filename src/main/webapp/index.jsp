@@ -143,19 +143,55 @@
                     <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fas fa-box me-1"></i>Products
                     </a>
+                    <%--<form action="item-display" method="get">
                     <ul class="dropdown-menu" aria-labelledby="productsDropdown">
                         <li><a class="dropdown-item" href="product.jsp"><i class="fas fa-laptop me-2"></i>Electronics</a></li>
                         <li><a class="dropdown-item" href="fashion.jsp"><i class="fas fa-tshirt me-2"></i>Fashion</a></li>
                         <li><a class="dropdown-item" href="#"><i class="fas fa-couch me-2"></i>Home & Living</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-spa me-2"></i>Beauty</a></li>
+                        <li><a class="dropdown-item" href="ElectronicItems.jsp"><i class="fas fa-spa me-2"></i>Beauty</a></li>
                     </ul>
+                    </form>--%>
+                    <form id="categoryForm" action="item-display" method="get">
+                        <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+                            <li>
+                                <a class="dropdown-item" href="ElectronicItems.jsp"
+                                   onclick="selectCategory('Electronic', event)">
+                                    <i class="fas fa-laptop me-2"></i>Electronics
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                   onclick="selectCategory('Fashion', event)">
+                                    <i class="fas fa-tshirt me-2"></i>Fashion
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                   onclick="selectCategory('living', event)">
+                                    <i class="fas fa-couch me-2"></i>Home & Living
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="#"
+                                   onclick="selectCategory('beauty', event)">
+                                    <i class="fas fa-spa me-2"></i>Beauty
+                                </a>
+                            </li>
+                        </ul>
+                        <input type="hidden" id="selectedCategory" name="category" value="">
+                    </form>
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="cart.jsp"><i class="fas fa-shopping-cart me-1"></i>Cart</a>
                 </li>
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user-circle me-1"></i>Account
+                        <i class="fas fa-user-circle me-1"></i>
+                        <%
+                            String username = (String) session.getAttribute("username");
+                        %><%= username != null && !username.isEmpty() ? username : "Account" %>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="login.jsp"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
@@ -163,6 +199,8 @@
                         <li><a class="dropdown-item" href="test.jsp"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                     </ul>
                 </li>
+
+
             </ul>
             <!-- Search Bar -->
             <form class="d-flex">
@@ -372,6 +410,18 @@
 </div>
 <script src="assets/js/addToCart.js"></script>
 <script src="assets/js/jquery-3.7.1.min.js"></script>
+<script>
+    function selectCategory(categoryName, event) {
+        event.preventDefault(); // Prevent default link behavior
+
+        // Set the hidden input value
+        document.getElementById('selectedCategory').value = categoryName;
+
+        // Submit the form
+        document.getElementById('categoryForm').submit();
+    }
+</script>
+
 <script>
 
 </script>

@@ -181,7 +181,7 @@
     function previewImage(input) {
         const preview = document.getElementById('imagePreview');
         const placeholder = document.getElementById('uploadPlaceholder');
-        const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+        const maxSize = 10 * 1024 * 1024; // 2MB in bytes
 
         if (input.files && input.files[0]) {
             if (input.files[0].size > maxSize) {

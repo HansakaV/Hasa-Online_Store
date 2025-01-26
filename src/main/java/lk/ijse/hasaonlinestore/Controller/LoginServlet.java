@@ -34,11 +34,9 @@ public class LoginServlet extends HttpServlet {
         }
 
 
-
-
-
         try {
             Account account = accountDAO.login(username, password);
+            System.out.println("hii"+username+password);
 
             if (account != null) {
                 // Create session
@@ -55,6 +53,7 @@ public class LoginServlet extends HttpServlet {
                 }
 
                 if ("admin".equals(account.getUsername())) {
+                    // When login is successful
                     response.sendRedirect("AdminPanel.jsp");
                 } else {
                     response.sendRedirect("index.jsp");

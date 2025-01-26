@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
+<%@ page import="lk.ijse.hasaonlinestore.dto.cartDTO" %>
+<%@ page import="lk.ijse.hasaonlinestore.dto.ViewCartDTO" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,8 +131,60 @@
     %>
     <div class="row">
         <div class="col-lg-8">
-            <div id="cartItems">
-                <!-- Cart items will be dynamically loaded here -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                    <tr>
+                        <th scope="col">Code</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">unitPrice</th>
+                        <th scope="col">Brand</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                        List<ViewCartDTO> datalist = (List<ViewCartDTO>) request.getAttribute("cartList");
+                        System.out.println("cart list ek  "+datalist);
+                        if (datalist == null) {
+                            response.sendRedirect("view-cart");
+                            return;
+                        }
+
+                        String name = (String) request.getAttribute("name");
+                        if (datalist != null && !datalist.isEmpty()) {
+                            for (ViewCartDTO item : datalist) {
+                    %>
+                    <tr>
+                        <td><%= item.getItemCode() %></td>
+                        <td><%= item.getItemName() %></td>
+                        <td><%= item.getCategory() %></td>
+                        <td><%= item.getQtyOnHand() %></td>
+                        <td><%= item.getUnitPrice() %></td>
+                        <td><%= item.getBrand() %></td>
+                        <td class="text-center">
+                            <button class="btn btn-danger btn-sm"
+                                    onclick="confirmDelete('<%= item.getItemCode() %>')"
+                                    type="button">
+                                <i class="bi bi-trash me-1"></i>
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <%
+                        }
+                    } else {
+                    %>
+                    <tr>
+                        <td colspan="5" class="text-center">No Customers found</td>
+                    </tr>
+                    <%
+                        }
+                    %>
+                    </tbody>
+                </table>
             </div>
         </div>
 
